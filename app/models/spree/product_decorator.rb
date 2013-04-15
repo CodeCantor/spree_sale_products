@@ -3,6 +3,5 @@ Spree::Product.class_eval do
   attr_accessible :sale_price
 
   def on_sale_price?
-    self.sale_price > 0.0
   end
 end
