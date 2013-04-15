@@ -9,7 +9,7 @@ Spree::LineItem.class_eval do
   define_method(:copy_price) do
     new_price = old_copy_price.bind(self).()
 
-    if self.variant.on_sale?
+    if self.variant.on_sale_price?
       sale_price = self.variant.sale_price
       
       if (new_price.present? and sale_price <= new_price) or sale_price <= self.price

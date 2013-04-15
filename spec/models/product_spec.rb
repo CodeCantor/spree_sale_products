@@ -8,11 +8,11 @@ describe Spree::Product do
   let(:product) { @product }
 
   it "should only be marked as on sale if a > 0 number is in place" do
-    product.on_sale?.should == false
+    product.on_sale_price?.should == false
     product.update_attributes :sale_price => 5.0
-    product.reload.master.on_sale?.should == true
-    product.on_sale?.should == true
+    product.reload.master.on_sale_price?.should == true
+    product.on_sale_price?.should == true
     product.update_attributes :sale_price => 0.0
-    product.reload.on_sale?.should == false
+    product.reload.on_sale_price?.should == false
   end
 end

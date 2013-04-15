@@ -38,7 +38,7 @@ describe Spree::OrdersController do
 
   describe "PUT #update" do
   	it "should update price when sale_price is set after initial add" do
-  		non_sale_variant = products.detect { |p| !p.on_sale? }.master
+  		non_sale_variant = products.detect { |p| !p.on_sale_price? }.master
   	  spree_put :populate, :variants => { "#{non_sale_variant.id}" => 1 }
   	  response.code.should == "302"
   	  order.line_items.length.should == 1
@@ -58,7 +58,7 @@ describe Spree::OrdersController do
   	  order.line_items.first.price.to_f.should == @sale_variant.sale_price.to_f
 
   	  @sale_variant.update_attributes :sale_price => 0
-  	  @sale_variant.on_sale?.should == false
+  	  @sale_variant.on_sale_price?.should == false
   	  spree_put :update, :order => {"line_items_attributes" =>  { "0" => { "quantity" => "2", "id" => "#{order.line_items.first.id}" } }}
   	  response.code.should == "302" # cart redirect
 
@@ -126,7 +126,7 @@ describe Spree::OrdersController do
       # no-sale
       # if you run order_update(3, 0) it wont pass this is because item prices are not updated if the quantity changes
       sale_variant.update_attributes :sale_price => 0
-      sale_variant.on_sale?.should == false
+      sale_variant.on_sale_price?.should == false
       order_update(4, 0)
 
       # volume
