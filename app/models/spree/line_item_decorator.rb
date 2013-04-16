@@ -5,24 +5,10 @@ Spree::LineItem.class_eval do
   # trying to create a 'calculation stack' wherein the best valid price is
   # chosen for the product. This is mainly for compatibility with spree_volume_pricing
 
-  old_copy_price = instance_method(:copy_price)
   define_method(:copy_price) do
-    new_price = old_copy_price.bind(self).()
-
     if self.variant.on_sale_price?
-      sale_price = self.variant.sale_price
-      
-      if (new_price.present? and sale_price <= new_price) or sale_price <= self.price
-        return self.price = sale_price
-      end
-
-      return self.price = sale_price if new_price.blank?
-    end
-
-    if new_price.nil?
-      self.price = self.variant.price
-    else
-      self.price = new_price
+      sale_price = self.variant.product.sale_price
+      return self.price = sale_price
     end
   end
 end
