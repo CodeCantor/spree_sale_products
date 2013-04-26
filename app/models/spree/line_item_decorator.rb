@@ -6,7 +6,7 @@ Spree::LineItem.class_eval do
   # chosen for the product. This is mainly for compatibility with spree_volume_pricing
 
   define_method(:copy_price) do
-    if self.variant.on_sale_price?
+    if self.variant.product.master.on_sale_price?
       sale_price = self.variant.product.sale_price
       return self.price = sale_price
     end
